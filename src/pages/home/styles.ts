@@ -15,13 +15,15 @@ export const Hero = styled('div', {
   maxWidth: 480,
   padding: '0 $10',
 
-  [`${Heading}`]: {
+  // sem o sinal de ">" ele aplicaria o estilo em qualquer Text e Heading que encontrasse
+  // com o sinal, indicamos que queremos aplicar somente no componente importado dentro do container que esta sendo estilizado, no caso, o "Hero"
+  [`> ${Heading}`]: {
     '@media(max-width: 600px)': {
       fontSize: '$6xl',
     },
   },
 
-  [`${Text}`]: {
+  [`> ${Text}`]: {
     maskType: '$2',
     color: '$gray200',
   },
