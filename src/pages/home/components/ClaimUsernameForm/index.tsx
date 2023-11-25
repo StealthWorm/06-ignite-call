@@ -22,7 +22,6 @@ export function ClaimUsernameForm() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<ClaimUsernameFormData>({
     resolver: zodResolver(ClaimUsernameFormSchema),
