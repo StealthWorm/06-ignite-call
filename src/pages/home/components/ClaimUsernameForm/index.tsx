@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Form, FormAnnotation } from './styles'
+import { useRouter } from 'next/router'
 
 const ClaimUsernameFormSchema = z.object({
   username: z
@@ -21,13 +22,19 @@ export function ClaimUsernameForm() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ClaimUsernameFormData>({
     resolver: zodResolver(ClaimUsernameFormSchema),
   })
 
+  const router = useRouter()
+
   async function handleClaimUsername(data: ClaimUsernameFormData) {
-    console.log(data)
+    const { username } = data
+
+    // operações que demoram, como o "router.push" (retorna uma promise), devem ter um await por recomendação, para que caso utilizemos o "isSubmitting" ele não seja instantaneo
+    await router.push(`/register?username=${username}`)
   }
 
   return (
@@ -37,7 +44,7 @@ export function ClaimUsernameForm() {
           size="sm"
           prefix="ignite.com/"
           placeholder="seu-usuário"
-          crossOrigin={TextInput}
+          crossOrigin="anonymous"
           {...register('username')}
         />
         <Button size="sm" type="submit">
