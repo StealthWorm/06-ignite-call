@@ -28,7 +28,7 @@ export function PrismaAdapter(
         },
       })
 
-      destroyCookie({ res }, '@ignitecall:userId', {
+      destroyCookie({ res }, '@ignitecall:user-id', {
         path: '/',
       })
 
