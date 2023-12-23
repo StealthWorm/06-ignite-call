@@ -1,13 +1,13 @@
 import { Adapter } from 'next-auth/adapters'
 import { prisma } from '../prisma'
 import { parseCookies, destroyCookie } from 'nookies'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse, NextPageContext } from 'next'
 
 //  intermédio entre a aplicação e o banco de dados
 //  Dentro do NextAuth, o Adapter é a camada de integração da aplicação à ferramentas de back-end ou mesmo banco de dados a fim de manipular dados da aplicação ou do usuário
 export function PrismaAdapter(
-  req: NextApiRequest,
-  res: NextApiResponse,
+  req: NextApiRequest | NextPageContext['req'],
+  res: NextApiResponse | NextPageContext['res'],
 ): Adapter {
   return {
     async createUser(user) {

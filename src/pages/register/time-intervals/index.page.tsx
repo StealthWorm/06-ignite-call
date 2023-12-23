@@ -23,6 +23,7 @@ import {
   IntervalItem,
 } from './styles'
 import { api } from '@/lib/axios'
+import { useRouter } from 'next/router'
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -96,6 +97,8 @@ export default function TimeIntervals() {
 
   const intervals = watch('intervals')
 
+  const router = useRouter()
+
   const weekDays = getWeekDays()
 
   // useFieldArray permite iterar um campo do formulário que é um array
@@ -110,6 +113,8 @@ export default function TimeIntervals() {
     await api.post('/users/time-intervals', {
       intervals,
     })
+
+    await router.push('/register/update-profile')
   }
 
   return (
