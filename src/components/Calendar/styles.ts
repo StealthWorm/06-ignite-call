@@ -5,6 +5,7 @@ export const CalendarContainer = styled('div', {
   flexDirection: 'column',
   gap: '$6',
   padding: '$6',
+  width: '100%',
 })
 
 export const CalendarHeader = styled('div', {
@@ -15,6 +16,7 @@ export const CalendarHeader = styled('div', {
 
 export const CalendarTitle = styled(Text, {
   fontWeight: '$medium',
+  textTransform: 'capitalize',
 
   span: {
     color: '$gray200',
@@ -60,8 +62,8 @@ export const CalendarBody = styled('table', {
   },
 
   'tbody:before': {
-    content: '.',
     lineHeight: '0.75rem',
+    content: '.',
     display: 'block',
     color: '$gray800',
   },
@@ -74,7 +76,7 @@ export const CalendarBody = styled('table', {
 export const CalendarDay = styled('button', {
   all: 'unset',
   width: '100%',
-  aspectRatio: '1 / 1', // obriga o componente a ter a mesma largura/altura
+  aspectRatio: '1 / 1',
   background: '$gray600',
   textAlign: 'center',
   cursor: 'pointer',
