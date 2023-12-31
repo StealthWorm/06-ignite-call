@@ -8,10 +8,25 @@ import {
   CalendarHeader,
   CalendarTitle,
 } from './styles'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import dayjs from 'dayjs'
 
-export function Calendar() {
+interface CalendarWeek {
+  week: number
+  days: Array<{
+    date: dayjs.Dayjs
+    disabled: boolean
+  }>
+}
+
+type CalendarWeeks = CalendarWeek[]
+
+interface CalendarProps {
+  selectedDate: Date | null
+  onDateSelected: (date: Date) => void
+}
+
+export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1) // setando dia como um, pois só vamos usar o mês e o ano
   })
@@ -32,6 +47,74 @@ export function Calendar() {
 
   const currentMonth = currentDate.format('MMMM')
   const currentYear = currentDate.format('YYYY')
+
+  const calendarWeeks = useMemo(() => {
+    const daysInMonthArray = Array.from({
+      length: currentDate.daysInMonth(), // quando usamos o array.from com "length", o valor volta undefined, por isso utilizamos o indice
+    }).map((_, i) => {
+      return currentDate.set('date', i + 1) // 'date' no dayjs significa o 'dia', apesar de ser contraintuitivo
+    })
+
+    const firstWeekDay = currentDate.get('day') // 'day' no dayjs significa o 'dia da semana', como segunda, terça...
+
+    // dias do ultimo mês para mostrar antes do mês atual
+    const previousMonthFillArray = Array.from({
+      length: firstWeekDay,
+    })
+      .map((_, i) => {
+        return currentDate.subtract(i + 1, 'day')
+      })
+      .reverse()
+
+    // return [...previousMonthFillArray, ...daysInMonthArray]
+    const lastDayInCurrentMonth = currentDate.set(
+      'date',
+      currentDate.daysInMonth(),
+    )
+    const lastWeekDay = lastDayInCurrentMonth.get('day')
+
+    // dias do próximo mês para mostrar depois do mês atual
+    const nextMonthFillArray = Array.from({
+      length: 7 - (lastWeekDay + 1),
+    }).map((_, i) => {
+      return lastDayInCurrentMonth.add(i + 1, 'day')
+    })
+
+    const calendarDays = [
+      ...previousMonthFillArray.map((date) => {
+        return { date, disabled: true }
+      }),
+      ...daysInMonthArray.map((date) => {
+        return { date, disabled: date.endOf('day').isBefore(new Date()) }
+      }),
+      ...nextMonthFillArray.map((date) => {
+        return { date, disabled: true }
+      }),
+    ]
+
+    const calendarWeeks = calendarDays.reduce<CalendarWeeks>(
+      // "weeks" é a info que posso manipular
+      // "_" é cada dia do "calendarDays"
+      //  "original" retorna o "calendarDays" em si, sem modificação. Não é exclusivo do reduce !!
+      (weeks, _, i, original) => {
+        const isNewWeek = i % 7 === 0
+
+        if (isNewWeek) {
+          weeks.push({
+            week: i / 7 + 1, // informa qul é o indice da semana atual
+            days: original.slice(i, i + 7), // quais os dias da semana atual (incluindo se esta disabled ou não)
+          })
+        }
+
+        return weeks
+      },
+      [], // valor inicial
+    )
+
+    return calendarWeeks
+  }, [currentDate])
+
+  console.log(calendarWeeks)
 
   return (
     <CalendarContainer>
@@ -59,44 +142,24 @@ export function Calendar() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-              <CalendarDay>1</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay disabled>2</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>3</CalendarDay>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <CalendarDay>1</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>1</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>1</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>1</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>1</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay disabled>2</CalendarDay>
-            </td>
-            <td>
-              <CalendarDay>3</CalendarDay>
-            </td>
-          </tr>
+          {calendarWeeks.map(({ week, days }) => {
+            return (
+              <tr key={week}>
+                {days.map(({ date, disabled }) => {
+                  return (
+                    <td key={date.toString()}>
+                      <CalendarDay
+                        onClick={() => onDateSelected(date.toDate())}
+                        disabled={disabled}
+                      >
+                        {date.get('date')}
+                      </CalendarDay>
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </CalendarBody>
     </CalendarContainer>
