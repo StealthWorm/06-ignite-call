@@ -114,7 +114,7 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
     return calendarWeeks
   }, [currentDate])
 
-  console.log(calendarWeeks)
+  // console.log(calendarWeeks)
 
   return (
     <CalendarContainer>
