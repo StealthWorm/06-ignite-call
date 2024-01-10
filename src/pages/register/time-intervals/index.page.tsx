@@ -36,7 +36,7 @@ const timeIntervalsFormSchema = z.object({
       }),
     )
     .length(7)
-    //  zod tambem trabalha com transformação de dados também, e não só validação
+    //  zod tambem trabalha com transformação de dados, não só validação
     .transform((intervals) => intervals.filter((interval) => interval.enabled))
     // após utilizar o transform, não é possivel utilizar os metodos aux. (min, max, string, etc)
     // para isso existe o refine, que retorna true/false para uma dada condição dos dados originais, no caso esta verificando se existe pelo menos um selecionado
@@ -69,7 +69,7 @@ const timeIntervalsFormSchema = z.object({
 })
 
 // type TimeIntervalsFormData = z.infer<typeof timeIntervalsFormSchema>
-// como os dados de entrado e saido mudaram após as transformações, precisamos inferir as tipagens em cada momento
+// como os dados de entrada e saida mudaram após as transformações, precisamos inferir as tipagens em cada momento
 type TimeIntervalsFormInput = z.input<typeof timeIntervalsFormSchema>
 type TimeIntervalsFormOutput = z.output<typeof timeIntervalsFormSchema>
 
