@@ -23,7 +23,7 @@ export function PrismaAdapter(
           id: userIdOnCookies,
         },
         data: {
-          name: user.name,
+          name: user.name as string,
           email: user.email,
           avatar_url: user.image,
         },
@@ -118,9 +118,9 @@ export function PrismaAdapter(
           id: user.id!,
         },
         data: {
-          name: user.name,
+          name: user.name as string,
           email: user.email,
-          avatar_url: user.avatar_url,
+          avatar_url: user.image,
         },
       })
 
