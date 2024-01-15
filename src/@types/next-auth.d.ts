@@ -1,5 +1,5 @@
+// por mais que não use esse import precisamos declarar, para dizer que nao queremos sobrescrever mas extender
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// por mais que não use esse importe precisamos declarar, para dizer que nao queremos sobrescrever mas extender
 import NextAuth from 'next-auth'
 
 declare module 'next-auth' {
