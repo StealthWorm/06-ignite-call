@@ -1,7 +1,8 @@
-import { Adapter } from 'next-auth/adapters'
-import { prisma } from '../prisma'
-import { parseCookies, destroyCookie } from 'nookies'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { NextApiRequest, NextApiResponse, NextPageContext } from 'next'
+import { Adapter } from 'next-auth/adapters'
+import { parseCookies, destroyCookie } from 'nookies'
+import { prisma } from '../prisma'
 
 //  intermédio entre a aplicação e o banco de dados
 //  Dentro do NextAuth, o Adapter é a camada de integração da aplicação à ferramentas de back-end ou mesmo banco de dados a fim de manipular dados da aplicação ou do usuário
@@ -24,7 +25,7 @@ export function PrismaAdapter(
         data: {
           name: user.name,
           email: user.email,
-          avatar_url: user.avatar_url,
+          avatar_url: user.image,
         },
       })
 
@@ -133,8 +134,6 @@ export function PrismaAdapter(
       }
     },
 
-    // async deleteUser(userId) {},
-
     async linkAccount(account) {
       await prisma.account.create({
         data: {
@@ -152,8 +151,6 @@ export function PrismaAdapter(
         },
       })
     },
-
-    // async unlinkAccount({ providerAccountId, provider }) {},
 
     async createSession({ sessionToken, userId, expires }) {
       await prisma.session.create({
@@ -229,9 +226,9 @@ export function PrismaAdapter(
         },
       })
     },
-
     // async createVerificationToken({ identifier, expires, token }) {},
-
     // async useVerificationToken({ identifier, token }) {},
+    // async deleteUser(userId) {},
+    // async unlinkAccount({ providerAccountId, provider }) {},
   }
 }

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth/next'
 import { z } from 'zod'
 import { prisma } from '../../../lib/prisma'
 import { buildNextAuthOptions } from '../auth/[...nextauth].api'
@@ -23,7 +23,7 @@ export default async function handler(
   )
 
   if (!session) {
-    return res.status(401).end()
+    return res.status(401).end({ message: 'You must be logged in..' })
   }
 
   const { bio } = updateProfileBodySchema.parse(req.body)

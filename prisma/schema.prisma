@@ -8,7 +8,7 @@ generator client {
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
-  relationMode = "prisma" // planetscale não suporte FK nativamente, por isso definimos através dessa prop que é o Prisma quem vai gerenciar isso
+  relationMode = "prisma" // planetscale não suporta FK nativamente, por isso definimos através dessa prop que é o Prisma quem vai gerenciar isso
 }
 
 model User {
