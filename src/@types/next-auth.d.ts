@@ -1,4 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// por mais que não use esse importe precisamos declarar, para dizer que nao queremos sobrescrever mas extender
+import NextAuth from 'next-auth'
+
 declare module 'next-auth' {
+  // por padrão AdapterUser do Next tem image e não avatar_url, estamos mudando esse comportamento aqui
   export interface User {
     id: string
     name: string
