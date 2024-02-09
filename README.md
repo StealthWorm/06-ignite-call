@@ -66,7 +66,7 @@ ___
 Clone o projeto para o local desejado em seu computador.
 
 ```bash
-$ git clone git@github.com:andreviapiana/ignite-call.git
+$ git clone git@github.com:StealthWorm/06-ignite-call.git
 ```
 ___
 
